@@ -9,10 +9,12 @@ function set_hostname() {
 function add_ufw_rule() {
     local hostname="${1}"
     if [[ "${hostname}" =~ ^master.*$ ]]; then
+        echo "Adding UFW rules for master node"
         ufw allow 6443/tcp #apiserver
         ufw allow from 10.42.0.0/16 to any #pods
         ufw allow from 10.43.0.0/16 to any #services
     elif [[ "${hostname}" =~ ^worker.*$ ]]; then
+        echo "Adding UFW rules for worker node"
         ufw allow from 10.42.0.0/16 to any
         ufw allow from 10.43.0.0/16 to any
     fi
