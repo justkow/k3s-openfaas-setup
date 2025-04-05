@@ -8,6 +8,7 @@ function set_hostname() {
 
 function add_ufw_rule() {
     local hostname="${1}"
+    ufw allow ssh
     if [[ "${hostname}" =~ ^master.*$ ]]; then
         echo "Adding UFW rules for master node"
         ufw allow 6443/tcp #apiserver
