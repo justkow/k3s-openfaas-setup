@@ -11,7 +11,7 @@ function install_k3s() {
         curl -sfL "${k3s_url}" | K3S_TOKEN="${k3s_token}" sh -s - server
     elif [[ "${hostname}" =~ ^worker.*$ ]]; then
         echo "Installing K3s on worker node"
-        curl -sfL "${k3s_url}" | INSTALL_K3S_EXEC="agent" K3S_TOKEN="${k3s_token}" sh -s - --server "https://${server_ip}"
+        curl -sfL "${k3s_url}" | INSTALL_K3S_EXEC="agent" K3S_TOKEN="${k3s_token}" sh -s - --server "https://${server_ip}:6443"
     fi
 }
 
