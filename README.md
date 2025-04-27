@@ -46,4 +46,8 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
    ```bash
    ./install_k3s.sh
    ```
+3. Install `docker` on `master` node:
+   ```bash
+   ./install_docker.sh
+   ```
 ### ▶️ How to use
