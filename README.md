@@ -15,6 +15,27 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
 | Worker 1   | worker1    | `10.73.4.41`  |
 | Worker 2   | worker2    | `10.73.4.42`  |
 
-## Requirements
-1. Each node should have unique `hostname`
-2. Run `initial_setup.sh` script
+## 🛠️ Setup & Installation
+
+### 🧰 Scripts Overview
+
+| Script              | Description                                                                 |
+|----------------------|-----------------------------------------------------------------------------|
+| `initial_setup.sh`      | Sets hostname and adds basic UFW rules depending on node role (`master`/`worker`) |
+| `install_docker.sh`  | Installs Docker Engine (required for building OpenFaaS functions locally)  |
+| `install_k3s.sh`     | Installs the K3s Kubernetes distribution on the current machine            |
+
+### 🚀 Quick Start
+1. Initialize system settings
+   - On `master` node:
+      ```bash
+      ./initial_setup.sh master1
+      ```
+   - On `worker` nodes respectively:
+      ```bash
+      ./initial_setup.sh worker1
+      ```
+      ```bash
+      ./initial_setup.sh worker2
+      ```
+### ▶️ How to use
