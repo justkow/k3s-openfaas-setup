@@ -1,12 +1,12 @@
-# ⚙️ K3s-OpenFaaS setup
+# ⚙️ **K3s-OpenFaaS setup**
 
 This repository contains configuration files, manifests, and scripts for deploying [OpenFaaS](https://github.com/openfaas/faas) on a lightweight [K3s](https://github.com/k3s-io/k3s) Kubernetes cluster
 
-## 📦 What’s Inside
+## 📦 **What’s Inside**
 - Installation scripts for K3s and OpenFaaS
 - Basic usage examples and test functions
 
-## 🖧 Cluster Topology
+## 🖧 **Cluster Topology**
 The K3s cluster in this setup consists of 3 nodes, communicating over a private network (`10.73.4.0/24`):
 
 | Role       | Hostname   | IP Address    |
@@ -15,7 +15,7 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
 | Worker 1   | worker1    | `10.73.4.41`  |
 | Worker 2   | worker2    | `10.73.4.42`  |
 
-## 🛠️ Setup & Installation
+## 🛠️ **Setup & Installation**
 
 ### 🧰 Scripts Overview
 
@@ -26,6 +26,10 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
 | `install_k3s.sh`     | Installs the K3s Kubernetes distribution on the current machine            |
 
 ### 🚀 Quick Start
+1. Clone this repo on all of your nodes:
+   ```bash
+   git clone https://github.com/pangandalf/k3s-openfaas-setup.git
+   ```
 1. Initialize system settings
    - On `master` node:
       ```bash
@@ -38,4 +42,8 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
       ```bash
       ./initial_setup.sh worker2
       ```
+2. Install `k3s` on every node:
+   ```bash
+   ./install_k3s.sh
+   ```
 ### ▶️ How to use
