@@ -42,13 +42,24 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
       ```bash
       ./initial_setup.sh worker2
       ```
-2. Create `token` file with k3s token of your selection:
+2. Create `token` file with k3s token of your selection on all of your nodes (the token should be the same on master and workers):
    ```bash
    echo "your_token" > token
    ```
-3. Install `k3s` on every node:
+3. Install `k3s` on every node. The argument to the script is master node IP address:
    ```bash
-   ./install_k3s.sh
+   ./install_k3s.sh 10.73.4.40
+   ```
+   After installation, run this command to make sure that the process of setting up the cluster was successful:
+   ```bash
+   sudo kubectl get nodes
+   ```
+   The output should be similar to this:
+   ```bash
+   NAME      STATUS   ROLES                  AGE     VERSION
+   master1   Ready    control-plane,master   10m     v1.32.4+k3s1
+   worker1   Ready    <none>                 2m15s   v1.32.4+k3s1
+   worker2   Ready    <none>                 4s      v1.32.4+k3s1
    ```
 4. Install `docker` on `master` node:
    ```bash
