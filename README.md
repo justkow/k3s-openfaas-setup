@@ -42,11 +42,15 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
       ```bash
       ./initial_setup.sh worker2
       ```
-2. Install `k3s` on every node:
+2. Create `token` file with k3s token of your selection:
+   ```bash
+   echo "your_token" > token
+   ```
+3. Install `k3s` on every node:
    ```bash
    ./install_k3s.sh
    ```
-3. Install `docker` on `master` node:
+4. Install `docker` on `master` node:
    ```bash
    ./install_docker.sh
    ```
