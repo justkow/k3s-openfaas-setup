@@ -1,25 +1,34 @@
 #!/bin/bash
 
-REGISTRY_IP="10.73.4.40:5000"
+REGISTRY_IP="${1:?}:5000"
 DAEMON_FILE="/etc/docker/daemon.json"
+USER="${SUDO_USER:?}"
 
+YELLOW='\e[33m'
+RESET='\e[0m'
+
+echo -e "${YELLOW}[INFO] Installing arkade and faas-cli...${RESET}"
 curl -sSL https://get.arkade.dev/ | sudo -E sh
 arkade get faas-cli
-sudo mv "/home/${USER}/.arkade/bin/faas-cli" /usr/local/bin/
-faas-cli version
+sudo mv /root/.arkade/bin/faas-cli /usr/local/bin/
 
-# Create a local registry
+echo -e "${YELLOW}[INFO] Creating a local Docker registry...${RESET}"
 sudo docker run -d -p 5000:5000 --restart=always --name registry registry:2
-
-sudo bash -c "cat > $DAEMON_FILE <<EOF
+sudo bash -c "cat > ${DAEMON_FILE}" <<EOF
 {
-  \"insecure-registries\": [\"$REGISTRY_IP\"]
+  "insecure-registries": ["${REGISTRY_IP}"]
 }
-EOF"
+EOF
+
+echo -e "${YELLOW}[INFO] Restarting Docker...${RESET}"
 sudo systemctl restart docker
 
-#sudo docker tag hello-world 10.73.4.40:5000/hello
-#sudo docker push 10.73.4.40:5000/hello
-#sudo docker pull 10.73.4.40:5000/hello
+echo -e "${YELLOW}[INFO] Installing OpenFaaS...${RESET}"
+mkdir "/home/${USER}/.kube"
+sudo kubectl config view --raw >~/.kube/config
+export KUBECONFIG="/home/${USER}/.kube/config"
+sudo chown -R "${USER}":"${USER}" /tmp/charts
+sudo arkade install openfaas
 
-echo 'export OPENFAAS_PREFIX="10.73.4.40:5000"' >> ~/.bashrc
+echo -e "${YELLOW}[INFO] Checking OpenFaaS gateway status...${RESET}"
+sudo kubectl rollout status -n openfaas deploy/gateway
