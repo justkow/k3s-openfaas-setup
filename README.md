@@ -20,7 +20,7 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
 ### 🚀 Quick Start
 1. Clone this repo on all of your nodes:
    ```bash
-   git clone https://github.com/pangandalf/k3s-openfaas-setup.git
+   git clone https://github.com/justkow/k3s-openfaas-setup.git
    ```
 1. Initialize system settings
    - On `master` node:
