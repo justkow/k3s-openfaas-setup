@@ -20,7 +20,7 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
    ```bash
    git clone https://github.com/justkow/k3s-openfaas-setup.git
    ```
-1. Initialize system settings
+2. Initialize system settings
    - On `master` node:
       ```bash
       ./initial_setup.sh master1
@@ -32,11 +32,11 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
       ```bash
       ./initial_setup.sh worker2
       ```
-2. Create `token` file with k3s token of your selection on all of your nodes (the token should be the same on master and workers):
+3. Create `token` file with k3s token of your selection on all of your nodes (the token should be the same on master and workers):
    ```bash
    echo "your_token" > token
    ```
-3. Install `k3s` on every node. The argument to the script is master node IP address:
+4. Install `k3s` on every node. The argument to the script is master node IP address:
    ```bash
    ./install_k3s.sh 10.73.4.40
    ```
@@ -51,11 +51,11 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
    worker1   Ready    <none>                 2m15s   v1.32.4+k3s1
    worker2   Ready    <none>                 4s      v1.32.4+k3s1
    ```
-4. Install `docker` on master node:
+5. Install `docker` on master node:
    ```bash
    ./install_docker.sh
    ```
-5. Install `OpenFaaS` on master node (provide master IP address as the argument for the script)
+6. Install `OpenFaaS` on master node (provide master IP address as the argument for the script)
    > Note: If you run the script multiple times, you have to clean your .bashrc file manually
    ```bash
    sudo ./install_openfaas.sh 10.73.4.40
@@ -66,6 +66,10 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
    ```
    The output should look like this:
    ![OpenFaaS pods](images/pods.png)
+7. Configure Docker registry on all of the nodes:
+   ```bash
+   sudo ./config_registry.sh 10.73.4.40
+   ```
 
 ## ▶️ Running Python functions
 All operation in this section are performed on master node. First you have to forward local port to OpenFaaS gateway service:
