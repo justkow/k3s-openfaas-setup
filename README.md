@@ -15,9 +15,7 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
 | Worker 1   | worker1    | `10.73.4.41`  |
 | Worker 2   | worker2    | `10.73.4.42`  |
 
-## 🛠️ **Setup & Installation**
-
-### 🚀 Quick Start
+## 🚀 Quick Start
 1. Clone this repo on all of your nodes:
    ```bash
    git clone https://github.com/justkow/k3s-openfaas-setup.git
@@ -53,8 +51,19 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
    worker1   Ready    <none>                 2m15s   v1.32.4+k3s1
    worker2   Ready    <none>                 4s      v1.32.4+k3s1
    ```
-4. Install `docker` on `master` node:
+4. Install `docker` on master node:
    ```bash
    ./install_docker.sh
    ```
+5. Install `OpenFaaS` on master node (provide master IP address as the argument for the script)
+   > Note: If you run the script multiple times, you have to clean your .bashrc file manually
+   ```bash
+   sudo ./install_openfaas.sh 10.73.4.40
+   ```
+   To verify if installation was successful run:
+   ```bash
+   sudo kubectl get pods -n openfaas -o wide
+   ```
+   The output should look like this:
+   ![OpenFaaS pods](images/pods.png)
 ### ▶️ How to use
