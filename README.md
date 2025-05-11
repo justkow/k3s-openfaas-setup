@@ -17,14 +17,6 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
 
 ## 🛠️ **Setup & Installation**
 
-### 🧰 Scripts Overview
-
-| Script              | Description                                                                 |
-|----------------------|-----------------------------------------------------------------------------|
-| `initial_setup.sh`      | Sets hostname and adds basic UFW rules depending on node role (`master`/`worker`) |
-| `install_docker.sh`  | Installs Docker Engine (required for building OpenFaaS functions locally)  |
-| `install_k3s.sh`     | Installs the K3s Kubernetes distribution on the current machine            |
-
 ### 🚀 Quick Start
 1. Clone this repo on all of your nodes:
    ```bash
