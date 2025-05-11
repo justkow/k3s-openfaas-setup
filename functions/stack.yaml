@@ -1,0 +1,20 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+functions:
+  hello-world:
+    lang: python3-http
+    handler: ./hello-world
+    image: 10.73.4.40:5000/hello-world:latest
+    imagePullPolicy: IfNotPresent
+
+  prime-numbers:
+    lang: python3-http
+    handler: ./prime-numbers
+    image: 10.73.4.40:5000/prime-numbers:latest
+    imagePullPolicy: IfNotPresent
+
+  fio-test:
+    image: 10.73.4.40:5000/fio-test:latest
+    imagePullPolicy: IfNotPresent
