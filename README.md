@@ -1,6 +1,6 @@
 # ⚙️ **K3s-OpenFaaS setup**
 
-This repository contains configuration files and scripts for deploying [OpenFaaS](https://github.com/openfaas/faas) on a lightweight [K3s](https://github.com/k3s-io/k3s) Kubernetes cluster. Additionally, it includes example Python functions and monitoring setup using [Prometheus](https://github.com/prometheus/prometheus) and [Grafana](https://github.com/grafana/grafana).
+This repository contains configuration files, manifests and scripts for deploying [OpenFaaS](https://github.com/openfaas/faas) on a lightweight [K3s](https://github.com/k3s-io/k3s) Kubernetes cluster. Additionally, it includes example Python functions and monitoring setup using [Prometheus](https://github.com/prometheus/prometheus) and [Grafana](https://github.com/grafana/grafana).
 
 ## 📑 Table of Contents
 1. [Cluster Topology](#-cluster-topology)
@@ -10,6 +10,7 @@ This repository contains configuration files and scripts for deploying [OpenFaaS
    - [Calculating prime numbers](#cpu-intensive-function-for-calculating-prime-numbers)
 4. [Monitoring](#-monitoring)
    - [Prometheus with cAdvisor](#configuring-prometheus-with-cadvisor)
+   - [Access Prometheus dashboard](#access-prometheus-dashboard)
    - [Grafana]
 
 ## 🖧 **Cluster Topology**
@@ -175,7 +176,7 @@ echo "" | faas-cli invoke prime-numbers
 ## 📊 Monitoring
 `Prometheus` is deployed by default as a pod, while installing OpenFaaS.
 
-`cAdvisor` is included in the `cubectl` tool. You can test it by running e.g.:
+`cAdvisor` is included in the `kubectl` tool. You can test it by running e.g.:
 ```bash
 sudo kubectl get --raw /api/v1/nodes/worker1/proxy/metrics/cadvisor
 ```
@@ -201,3 +202,17 @@ sudo kubectl get --raw /api/v1/nodes/worker1/proxy/metrics/cadvisor
    ```bash
    sudo kubectl rollout restart deployment prometheus -n openfaas
    ```
+
+### Access Prometheus dashboard
+Forward Prometheus pod port `9090` to the host port
+```bash
+sudo sudo kubectl port-forward -n openfaas deploy/prometheus 9090:9090
+```
+
+Additionally, if your Prometheus is on a remote server, you have to create ssh tunel
+```bash
+ssh -L 9090:localhost:9090 user@10.73.4.40
+```
+
+Now access the dashboard in your browser (http://127.0.0.1:9090) and navigate to `Status>Target health`. State of all the targets should be `UP`
+![Prometheus dashboard](images/prometheus.png)
