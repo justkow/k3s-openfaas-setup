@@ -1,10 +1,17 @@
 # ⚙️ **K3s-OpenFaaS setup**
 
-This repository contains configuration files, manifests, and scripts for deploying [OpenFaaS](https://github.com/openfaas/faas) on a lightweight [K3s](https://github.com/k3s-io/k3s) Kubernetes cluster
+This repository contains configuration files and scripts for deploying [OpenFaaS](https://github.com/openfaas/faas) on a lightweight [K3s](https://github.com/k3s-io/k3s) Kubernetes cluster. Additionally, it includes example Python functions and monitoring setup using [Prometheus](https://github.com/prometheus/prometheus) and [Grafana](https://github.com/grafana/grafana).
 
-## 📦 **What’s Inside**
-- Installation scripts for K3s and OpenFaaS
-- Basic usage examples and test functions
+## 📑 Table of Contents
+1. [Cluster Topology](#-cluster-topology)
+2. [Quick Start](#-quick-start)
+3. [Running Python functions](#️-running-python-functions)
+   - [Creating first function](#simple-hello-world-function)
+   - [Calculating prime numbers](#cpu-intensive-function-for-calculating-prime-numbers)
+4. [Monitoring](#-monitoring)
+   - [Prometheus]
+   - [cAdvisor]
+   - [Grafana]
 
 ## 🖧 **Cluster Topology**
 The K3s cluster in this setup consists of 3 nodes, communicating over a private network (`10.73.4.0/24`):
