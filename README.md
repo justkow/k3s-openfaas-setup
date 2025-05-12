@@ -157,3 +157,13 @@ Copy `handler.py` file from this repository to your function directory
 ```bash
 cp k3s-openfaas-setup/functions/prime-numbers/handler.py prime-numbers/handler.py
 ```
+
+Then build, push, deploy and invoke the function
+```bash
+sudo faas-cli build -f stack.yaml
+sudo faas-cli push -f stack.yaml
+faas-cli deploy -f stack.yaml
+echo "" | faas-cli invoke prime-numbers
+```
+
+## 📊 Monitoring
