@@ -9,8 +9,7 @@ This repository contains configuration files and scripts for deploying [OpenFaaS
    - [Creating first function](#simple-hello-world-function)
    - [Calculating prime numbers](#cpu-intensive-function-for-calculating-prime-numbers)
 4. [Monitoring](#-monitoring)
-   - [Prometheus]
-   - [cAdvisor]
+   - [Prometheus with cAdvisor](#configuring-prometheus-with-cadvisor)
    - [Grafana]
 
 ## 🖧 **Cluster Topology**
@@ -174,3 +173,31 @@ echo "" | faas-cli invoke prime-numbers
 ```
 
 ## 📊 Monitoring
+`Prometheus` is deployed by default as a pod, while installing OpenFaaS.
+
+`cAdvisor` is included in the `cubectl` tool. You can test it by running e.g.:
+```bash
+sudo kubectl get --raw /api/v1/nodes/worker1/proxy/metrics/cadvisor
+```
+
+### Configuring Prometheus with cAdvisor
+`cAdvisor` provides valuable performance metrics e.g.: CPU and memory usage per function. In order `Prometheus` to be able to read these metrics, proper permissions have to be configured.
+
+1. Grant the openfaas-prometheus service account permission to access node metrics, logs, and proxy data for monitoring
+   ```bash
+   sudo kubectl apply -f k3s-openfaas-setup/manifests/prometheus-clusterrole.yaml
+   ```
+   ```bash
+   sudo kubectl apply -f k3s-openfaas-setup/manifests/prometheus-clusterrolebinding.yaml
+   ```
+2. Configure cAdvisor targets for Prometheus
+   ```bash
+   sudo kubectl -n openfaas delete configmap prometheus-config
+   ```
+   ```bash
+   sudo kubectl -n openfaas apply -f k3s-openfaas-setup/manifests/prometheus-config.yaml
+   ```
+3. Restart Prometheus pod
+   ```bash
+   sudo kubectl rollout restart deployment prometheus -n openfaas
+   ```
