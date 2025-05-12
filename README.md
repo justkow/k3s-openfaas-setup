@@ -136,3 +136,24 @@ Now test you function by running:
 ```bash
 echo "" | faas-cli invoke hello-world
 ```
+
+### CPU-intensive function for calculating prime numbers
+Append `prime-numbers` function to `stack.yaml` file
+```bash
+faas-cli new --append stack.yaml prime-numbers --lang python3-http
+```
+
+Add registry information to the `stack.yaml`, so the functions section for `prime-numbers` looks like this:
+```yaml
+functions:
+  prime-numbers:
+    lang: python3-http
+    handler: ./prime-numbers
+    image: 10.73.4.40:5000/prime-numbers:latest
+    imagePullPolicy: IfNotPresent
+```
+
+Copy `handler.py` file from this repository to your function directory
+```bash
+cp k3s-openfaas-setup/functions/prime-numbers/handler.py prime-numbers/handler.py
+```
