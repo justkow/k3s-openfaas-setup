@@ -19,7 +19,7 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
 
 | Role       | Hostname   | IP Address    |
 |------------|------------|---------------|
-| Master     | master     | `10.73.4.40`  |
+| Master     | master1    | `10.73.4.40`  |
 | Worker 1   | worker1    | `10.73.4.41`  |
 | Worker 2   | worker2    | `10.73.4.42`  |
 
@@ -226,12 +226,12 @@ Now access the dashboard in your browser (http://127.0.0.1:9090) and navigate to
 
 2. Add the Grafana Helm Repository
    ```bash
-   helm repo add grafana https://grafana.github.io/helm-charts
+   sudo helm repo add grafana https://grafana.github.io/helm-charts
    ```
 
 3. Update Helm Repositories
    ```bash
-   helm repo update
+   sudo helm repo update
    ```
 
 4. Create `monitoring` namespace in your cluster
@@ -251,7 +251,7 @@ Now access the dashboard in your browser (http://127.0.0.1:9090) and navigate to
 
 7. Check the status of your Grafana deployment
    ```bash
-   kubectl get all -n monitoring
+   sudo kubectl get all -n monitoring
    ```
 
 ### Access Grafana dashboard
@@ -265,7 +265,7 @@ Additionally, if your Grafana is on a remote server, you have to create ssh tune
 ssh -L 3000:localhost:3000 user@10.73.4.40
 ```
 
-Now access Grafana web UI in your browser (http://127.0.0.1:3000). When asked about credentials provide login=admin and password=`your_password`. Then navigate to `Data sources>Add data source`, select Prometheus and provide its address:
+Now access Grafana web UI in your browser (http://127.0.0.1:3000). When asked about credentials provide login=admin and password=`your_password`. Then navigate to `Data sources>Add data source`, select Prometheus and provide this address:
 ```bash
 http://prometheus.openfaas.svc.cluster.local:9090
 ```
