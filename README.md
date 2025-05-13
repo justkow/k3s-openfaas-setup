@@ -234,18 +234,28 @@ Now access the dashboard in your browser (http://127.0.0.1:9090) and navigate to
    helm repo update
    ```
 
-4. Install Grafana
+4. Create `monitoring` namespace in your cluster
    ```bash
-   helm install grafana grafana/grafana --namespace monitoring --set adminPassword=your_password
+   sudo kubectl create namespace monitoring
    ```
 
-5. Check the status of your Grafana deployment
+5. Export the kubeconfig path
+   ```bash
+   export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+   ```
+
+6. Install Grafana
+   ```bash
+   sudo helm install grafana grafana/grafana --namespace monitoring --set adminPassword=your_password
+   ```
+
+7. Check the status of your Grafana deployment
    ```bash
    kubectl get all -n monitoring
    ```
 
 ### Access Grafana dashboard
-Forward Grafana port `3000` from pod to `80` on the host
+Forward Grafana port `80` from pod to `3000` on the host
 ```bash
 sudo kubectl port-forward -n monitoring svc/grafana 3000:80
 ```
@@ -255,3 +265,10 @@ Additionally, if your Grafana is on a remote server, you have to create ssh tune
 ssh -L 3000:localhost:3000 user@10.73.4.40
 ```
 
+Now access Grafana web UI in your browser (http://127.0.0.1:3000). When asked about credentials provide login=admin and password=`your_password`. Then navigate to `Data sources>Add data source`, select Prometheus and provide its address:
+```bash
+http://prometheus.openfaas.svc.cluster.local:9090
+```
+
+Next go to `Dashboards>Create dashboard>Import dashboard` and paste `k3s-openfaas-setup/grafana/dashboard.json` in the textbox. The `OpenFaaS Monitoring Dashboard` will import itself and look like this:
+![Grafana](./images/grafana.png)
