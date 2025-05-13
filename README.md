@@ -215,7 +215,7 @@ Additionally, if your Prometheus is on a remote server, you have to create ssh t
 ssh -L 9090:localhost:9090 user@10.73.4.40
 ```
 
-Now access the dashboard in your browser (http://127.0.0.1:9090) and navigate to `Status>Target health`. State of all the targets should be `UP`
+Now access the dashboard in your browser (http://127.0.0.1:9090) and navigate to `Status > Target health`. State of all the targets should be `UP`
 ![Prometheus dashboard](images/prometheus.png)
 
 ### Setting up Grafana
@@ -265,10 +265,10 @@ Additionally, if your Grafana is on a remote server, you have to create ssh tune
 ssh -L 3000:localhost:3000 user@10.73.4.40
 ```
 
-Now access the Grafana web UI in your browser at http://127.0.0.1:3000. When prompted, enter the login `admin` and the password you configured during installation. Then navigate to `Data sources>Add data source`, select Prometheus and provide this address:
+Now access the Grafana web UI in your browser at http://127.0.0.1:3000. When prompted, enter the login `admin` and the password you configured during installation. Then navigate to `Data sources > Add data source`, select Prometheus and provide this address:
 ```bash
 http://prometheus.openfaas.svc.cluster.local:9090
 ```
 
-Next go to `Dashboards>Create dashboard>Import dashboard` and paste `k3s-openfaas-setup/grafana/dashboard.json` in the textbox. The `OpenFaaS Monitoring Dashboard` will be imported and should look similar to this:
+Next go to `Dashboards > Create dashboard > Import dashboard` and paste `k3s-openfaas-setup/grafana/dashboard.json` in the textbox. The `OpenFaaS Monitoring Dashboard` will be imported and should look similar to this:
 ![Grafana](./images/grafana.png)
