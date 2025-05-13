@@ -10,8 +10,9 @@ This repository contains configuration files, manifests and scripts for deployin
    - [Calculating prime numbers](#cpu-intensive-function-for-calculating-prime-numbers)
 4. [Monitoring](#-monitoring)
    - [Prometheus with cAdvisor](#configuring-prometheus-with-cadvisor)
-   - [Access Prometheus dashboard](#access-prometheus-dashboard)
-   - [Grafana]
+   - [Prometheus dashboard](#access-prometheus-dashboard)
+   - [Grafana](#setting-up-grafana)
+   - [Grafana dashboard](#access-grafana-dashboard)
 
 ## 🖧 **Cluster Topology**
 The K3s cluster in this setup consists of 3 nodes, communicating over a private network (`10.73.4.0/24`):
@@ -204,9 +205,9 @@ sudo kubectl get --raw /api/v1/nodes/worker1/proxy/metrics/cadvisor
    ```
 
 ### Access Prometheus dashboard
-Forward Prometheus pod port `9090` to the host port
+Forward Prometheus port `9090` from pod to the host
 ```bash
-sudo sudo kubectl port-forward -n openfaas deploy/prometheus 9090:9090
+sudo kubectl port-forward -n openfaas deploy/prometheus 9090:9090
 ```
 
 Additionally, if your Prometheus is on a remote server, you have to create ssh tunel
@@ -216,3 +217,41 @@ ssh -L 9090:localhost:9090 user@10.73.4.40
 
 Now access the dashboard in your browser (http://127.0.0.1:9090) and navigate to `Status>Target health`. State of all the targets should be `UP`
 ![Prometheus dashboard](images/prometheus.png)
+
+### Setting up Grafana
+1. Install Helm
+   ```bash
+   sudo snap install helm --classic
+   ```
+
+2. Add the Grafana Helm Repository
+   ```bash
+   helm repo add grafana https://grafana.github.io/helm-charts
+   ```
+
+3. Update Helm Repositories
+   ```bash
+   helm repo update
+   ```
+
+4. Install Grafana
+   ```bash
+   helm install grafana grafana/grafana --namespace monitoring --set adminPassword=your_password
+   ```
+
+5. Check the status of your Grafana deployment
+   ```bash
+   kubectl get all -n monitoring
+   ```
+
+### Access Grafana dashboard
+Forward Grafana port `3000` from pod to `80` on the host
+```bash
+sudo kubectl port-forward -n monitoring svc/grafana 3000:80
+```
+
+Additionally, if your Grafana is on a remote server, you have to create ssh tunel
+```bash
+ssh -L 3000:localhost:3000 user@10.73.4.40
+```
+
