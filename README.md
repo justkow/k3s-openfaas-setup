@@ -33,14 +33,14 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
       ```bash
       ./initial_setup.sh master1
       ```
-   - On `worker` nodes respectively:
+   - On each `worker` node:
       ```bash
       ./initial_setup.sh worker1
       ```
       ```bash
       ./initial_setup.sh worker2
       ```
-3. Create `token` file with k3s token of your selection on all of your nodes (the token should be the same on master and workers):
+3. Create a `token` file with a K3s token of your choice on all nodes (the token must be the same on both master and worker nodes):
    ```bash
    echo "your_token" > token
    ```
@@ -68,7 +68,7 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
    ```bash
    sudo ./install_openfaas.sh 10.73.4.40
    ```
-   To verify if installation was successful run:
+   To verify if the installation was successful, run:
    ```bash
    sudo kubectl get pods -n openfaas -o wide
    ```
@@ -80,7 +80,7 @@ The K3s cluster in this setup consists of 3 nodes, communicating over a private 
    ```
 
 ## ▶️ Running Python functions
-All operation in this section are performed on master node. First you have to forward local port to OpenFaaS gateway service:
+All operations in this section are performed on the master node. First you have to forward local port to OpenFaaS gateway service:
 ```bash
 faas-port-forward
 ```
@@ -88,13 +88,13 @@ Then login to OpenFaaS:
 ```bash
 faas-login
 ```
-To run your serverless functions, you need to pull proper template from OpenFaaS repository. For our usecases, the `python-http` template will be used:
+To run your serverless functions, you need to pull the appropriate template from the OpenFaaS repository. For our usecases, the `python-http` template will be used:
 ```bash
 faas-cli template store pull python3-http
 ```
 
 ### Simple "Hello world!" function
-Create the function by running command:
+Create the function by running the following command:
 ```bash
 faas-cli new hello-world --lang python3-http
 ```
@@ -183,7 +183,7 @@ sudo kubectl get --raw /api/v1/nodes/worker1/proxy/metrics/cadvisor
 ```
 
 ### Configuring Prometheus with cAdvisor
-`cAdvisor` provides valuable performance metrics e.g.: CPU and memory usage per function. In order `Prometheus` to be able to read these metrics, proper permissions have to be configured.
+`cAdvisor` provides valuable performance metrics e.g.: CPU and memory usage per function. For `Prometheus` to be able to read these metrics, proper permissions must be configured.
 
 1. Grant the openfaas-prometheus service account permission to access node metrics, logs, and proxy data for monitoring
    ```bash
@@ -265,10 +265,10 @@ Additionally, if your Grafana is on a remote server, you have to create ssh tune
 ssh -L 3000:localhost:3000 user@10.73.4.40
 ```
 
-Now access Grafana web UI in your browser (http://127.0.0.1:3000). When asked about credentials provide login=admin and password=`your_password`. Then navigate to `Data sources>Add data source`, select Prometheus and provide this address:
+Now access the Grafana web UI in your browser at http://127.0.0.1:3000. When prompted, enter the login `admin` and the password you configured during installation. Then navigate to `Data sources>Add data source`, select Prometheus and provide this address:
 ```bash
 http://prometheus.openfaas.svc.cluster.local:9090
 ```
 
-Next go to `Dashboards>Create dashboard>Import dashboard` and paste `k3s-openfaas-setup/grafana/dashboard.json` in the textbox. The `OpenFaaS Monitoring Dashboard` will import itself and look like this:
+Next go to `Dashboards>Create dashboard>Import dashboard` and paste `k3s-openfaas-setup/grafana/dashboard.json` in the textbox. The `OpenFaaS Monitoring Dashboard` will be imported and should look similar to this:
 ![Grafana](./images/grafana.png)
